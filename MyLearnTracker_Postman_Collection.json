@@ -1,0 +1,249 @@
+{
+  "info": {
+    "name": "MyLearnTracker API",
+    "description": "Complete API collection for MyLearnTracker - Personal Learning Goal Tracker",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Get API Info",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000"
+        },
+        "description": "Get information about the API and available endpoints"
+      }
+    },
+    {
+      "name": "2. Get All Courses",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/courses",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses"]
+        },
+        "description": "Retrieve all courses from the tracker"
+      }
+    },
+    {
+      "name": "3. Get Single Course",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/courses/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses", "1"]
+        },
+        "description": "Get a specific course by ID"
+      }
+    },
+    {
+      "name": "4. Add New Course - Python",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Python Basics\",\n  \"description\": \"Learn Python fundamentals including variables, loops, and functions\",\n  \"target_date\": \"2025-12-31\",\n  \"status\": \"Not Started\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/courses",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses"]
+        },
+        "description": "Add a new Python course"
+      }
+    },
+    {
+      "name": "5. Add New Course - Web Dev",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Web Development\",\n  \"description\": \"HTML, CSS, JavaScript, and responsive design\",\n  \"target_date\": \"2026-03-15\",\n  \"status\": \"Not Started\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/courses",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses"]
+        },
+        "description": "Add a new Web Development course"
+      }
+    },
+    {
+      "name": "6. Add New Course - Data Science",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Data Science Fundamentals\",\n  \"description\": \"Introduction to data analysis and machine learning\",\n  \"target_date\": \"2026-06-30\",\n  \"status\": \"Not Started\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/courses",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses"]
+        },
+        "description": "Add a new Data Science course"
+      }
+    },
+    {
+      "name": "7. Update Course Status",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"In Progress\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/courses/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses", "1"]
+        },
+        "description": "Update the status of a course"
+      }
+    },
+    {
+      "name": "8. Update Course Details",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Advanced Python Programming\",\n  \"description\": \"Deep dive into Python - decorators, generators, async programming\",\n  \"target_date\": \"2026-01-15\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/courses/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses", "1"]
+        },
+        "description": "Update multiple fields of a course"
+      }
+    },
+    {
+      "name": "9. Delete Course",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/courses/2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses", "2"]
+        },
+        "description": "Delete a course by ID"
+      }
+    },
+    {
+      "name": "10. Get Statistics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/courses/stats",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses", "stats"]
+        },
+        "description": "Get statistics about your courses (total, by status)"
+      }
+    },
+    {
+      "name": "11. Search Courses",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/courses/search?q=python",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses", "search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "python",
+              "description": "Search term"
+            }
+          ]
+        },
+        "description": "Search courses by name or description"
+      }
+    },
+    {
+      "name": "12. Test Invalid Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Incomplete Course\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/courses",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "courses"]
+        },
+        "description": "Test error handling with incomplete data"
+      }
+    }
+  ]
+}
