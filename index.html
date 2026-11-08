@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeCraftHub: Learning Management Platform</title>
+    <style>
+      :root {
+        --primary: #8b5cf6;
+        --primary-strong: #7c3aed;
+        --primary-hover: #6d28d9;
+        --primary-soft: #ede9fe;
+        --success: #f59e0b;
+        --success-soft: #fef3c7;
+        --danger: #ef4444;
+        --danger-strong: #b91c1c;
+        --danger-soft: #fef2f2;
+        --text: #1f1b2e;
+        --text-muted: #5b5670;
+        --border: #e5e1f0;
+        --border-strong: #cfc8e0;
+        --surface: #ffffff;
+        --page: #f8f7fc;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--text);
+        background: var(--page);
+      }
+
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      h1,
+      h2 {
+        line-height: 1.2;
+        margin: 0;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      .app-header {
+        background: var(--primary);
+        color: #ffffff;
+        padding: 32px 0;
+        margin-bottom: 32px;
+      }
+
+      .app-header h1 {
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .app-header p {
+        margin: 8px 0 0;
+        color: var(--primary-soft);
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 1px 2px rgba(31, 27, 46, 0.04);
+      }
+
+      .card h2 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+
+      .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .list-header h2 {
+        margin: 0;
+      }
+
+      .count {
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .field-wide {
+        grid-column: 1 / -1;
+      }
+
+      .field label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .req {
+        color: var(--danger-strong);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        font: inherit;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--border-strong);
+        border-radius: 8px;
+        padding: 10px 12px;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 88px;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+      }
+
+      input[aria-invalid="true"],
+      select[aria-invalid="true"],
+      textarea[aria-invalid="true"] {
+        border-color: var(--danger);
+      }
+
+      .field-error {
+        margin: 6px 0 0;
+        font-size: 13px;
+        color: var(--danger-strong);
+      }
+
+      .field-error:empty {
+        display: none;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background-color 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
+      }
+
+      .btn:active:not(:disabled) {
+        transform: translateY(1px);
+      }
+
+      .btn:focus-visible,
+      .icon-btn:focus-visible {
+        outline: 3px solid var(--primary);
+        outline-offset: 2px;
+      }
+
+      .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .btn.is-loading {
+        cursor: progress;
+      }
+
+      .btn-primary {
+        background: var(--primary-strong);
+        color: #ffffff;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: var(--primary-hover);
+      }
+
+      .btn-ghost {
+        background: var(--surface);
+        color: var(--text);
+        border-color: var(--border-strong);
+      }
+
+      .btn-ghost:hover:not(:disabled) {
+        background: var(--primary-soft);
+      }
+
+      .btn-danger {
+        background: var(--danger-soft);
+        color: var(--danger-strong);
+        border-color: var(--danger);
+      }
+
+      .btn-danger:hover:not(:disabled) {
+        background: #fee2e2;
+      }
+
+      .btn-small {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+
+      .spinner {
+        display: none;
+        width: 14px;
+        height: 14px;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+
+      .btn.is-loading .spinner {
+        display: inline-block;
+      }
+
+      .spinner.spinner-lg {
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+        border: 3px solid #ddd6fe;
+        border-top-color: var(--primary);
+        border-right-color: #ddd6fe;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 32px 0;
+        color: var(--text-muted);
+      }
+
+      .alert {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .alert-error {
+        background: var(--danger-soft);
+        color: #7f1d1d;
+        border: 1px solid #fecaca;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      th {
+        text-align: left;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      td {
+        padding: 14px 12px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+
+      tbody tr:hover {
+        background: #faf9ff;
+      }
+
+      .course-name {
+        font-weight: 600;
+      }
+
+      .course-desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        max-width: 360px;
+        color: var(--text-muted);
+      }
+
+      .actions {
+        white-space: nowrap;
+        text-align: right;
+      }
+
+      .actions .btn + .btn {
+        margin-left: 8px;
+      }
+
+      .badge {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+
+      .badge-neutral {
+        background: #f1f0f5;
+        color: #3f3a52;
+      }
+
+      .badge-primary {
+        background: var(--primary-soft);
+        color: #5b21b6;
+      }
+
+      .badge-success {
+        background: var(--success-soft);
+        color: #92400e;
+      }
+
+      .empty {
+        text-align: center;
+        color: var(--text-muted);
+        padding: 32px 0;
+        margin: 0;
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        font-size: 24px;
+        line-height: 1;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+
+      .icon-btn:hover {
+        background: var(--primary-soft);
+        color: var(--text);
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        background: rgba(31, 27, 46, 0.5);
+        animation: fade-in 0.15s ease;
+      }
+
+      .modal-dialog {
+        width: 100%;
+        max-width: 640px;
+        max-height: 90vh;
+        overflow-y: auto;
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 20px 40px rgba(31, 27, 46, 0.2);
+        animation: modal-in 0.2s ease;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .modal-header h2 {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .toasts {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 360px;
+      }
+
+      .toast {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(31, 27, 46, 0.2);
+        animation: toast-in 0.25s ease;
+      }
+
+      .toast-success {
+        background: var(--success);
+        color: var(--text);
+      }
+
+      .toast-error {
+        background: var(--danger-strong);
+        color: #ffffff;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes modal-in {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes toast-in {
+        from {
+          opacity: 0;
+          transform: translateX(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @media (max-width: 720px) {
+        .app-header {
+          padding: 24px 0;
+        }
+
+        .app-header h1 {
+          font-size: 22px;
+        }
+
+        .card {
+          padding: 16px;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .form-actions .btn {
+          flex: 1 1 auto;
+        }
+
+        thead {
+          display: none;
+        }
+
+        table,
+        tbody,
+        tr,
+        td {
+          display: block;
+          width: 100%;
+        }
+
+        tr {
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 8px 12px;
+          margin-bottom: 12px;
+        }
+
+        td {
+          display: grid;
+          grid-template-columns: 110px 1fr;
+          gap: 12px;
+          padding: 8px 0;
+          border-bottom: none;
+        }
+
+        td::before {
+          content: attr(data-label);
+          font-weight: 600;
+          color: var(--text-muted);
+        }
+
+        .course-desc {
+          max-width: none;
+        }
+
+        .actions {
+          display: flex;
+          justify-content: flex-end;
+          text-align: left;
+          padding-top: 12px;
+          border-top: 1px solid var(--border);
+          margin-top: 4px;
+        }
+
+        .actions::before {
+          content: none;
+        }
+      }
+    </style>
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="container">
+        <h1>CodeCraftHub: Your Learning Management Platform</h1>
+        <p>Plan, track, and manage every course in one place.</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card" aria-labelledby="add-title">
+        <h2 id="add-title">Add a new course</h2>
+        <form id="create-form" novalidate>
+          <div class="form-grid" id="create-fields"></div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <span class="spinner" aria-hidden="true"></span>
+              <span>Add course</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card" aria-labelledby="courses-title">
+        <div class="list-header">
+          <h2 id="courses-title">Your courses</h2>
+          <span class="count" id="course-count"></span>
+        </div>
+
+        <div id="list-status" role="status">
+          <div id="list-loading" class="loading-row">
+            <span class="spinner spinner-lg" aria-hidden="true"></span>
+            <span>Loading courses...</span>
+          </div>
+          <div id="list-error" class="alert alert-error" hidden>
+            <span id="list-error-text"></span>
+            <button type="button" class="btn btn-ghost btn-small" id="retry-btn">Try again</button>
+          </div>
+        </div>
+
+        <div class="table-wrap" id="table-wrap" hidden>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Target date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Created</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="course-rows"></tbody>
+          </table>
+        </div>
+        <p class="empty" id="empty-state" hidden>No courses yet. Add your first course above.</p>
+      </section>
+    </main>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+
+    <div class="modal" id="edit-modal" hidden>
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="edit-title">
+        <div class="modal-header">
+          <h2 id="edit-title">Edit course</h2>
+          <button type="button" class="icon-btn" id="edit-close" aria-label="Close">&times;</button>
+        </div>
+        <form id="edit-form" novalidate>
+          <div class="form-grid" id="edit-fields"></div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-ghost" id="edit-cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+              <span class="spinner" aria-hidden="true"></span>
+              <span>Save changes</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "http://localhost:5000/api/courses";
+      const STATUSES = ["Not Started", "In Progress", "Completed"];
+
+      const $ = (id) => document.getElementById(id);
+      const createForm = $("create-form");
+      const editForm = $("edit-form");
+      const editModal = $("edit-modal");
+
+      let courses = [];
+      let editingId = null;
+      let returnFocusEl = null;
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[ch]);
+      }
+
+      function formatDate(value, isDayOnly = false) {
+        if (!value) return "—";
+        let date;
+        if (isDayOnly) {
+          const [y, m, d] = String(value).slice(0, 10).split("-").map(Number);
+          date = new Date(y, m - 1, d);
+        } else {
+          date = new Date(value);
+        }
+        if (Number.isNaN(date.getTime())) return String(value);
+        return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+      }
+
+      function statusBadgeClass(status) {
+        return {
+          "Not Started": "badge-neutral",
+          "In Progress": "badge-primary",
+          Completed: "badge-success",
+        }[status] || "badge-neutral";
+      }
+
+      function fieldsMarkup(prefix) {
+        return `
+          <div class="field">
+            <label for="${prefix}-name">Course name <span class="req">*</span></label>
+            <input id="${prefix}-name" name="name" type="text" maxlength="120" />
+            <p class="field-error" data-error="name"></p>
+          </div>
+          <div class="field">
+            <label for="${prefix}-target_date">Target date <span class="req">*</span></label>
+            <input id="${prefix}-target_date" name="target_date" type="date" />
+            <p class="field-error" data-error="target_date"></p>
+          </div>
+          <div class="field">
+            <label for="${prefix}-status">Status <span class="req">*</span></label>
+            <select id="${prefix}-status" name="status">
+              <option value="">Select a status</option>
+              ${STATUSES.map((s) => `<option value="${s}">${s}</option>`).join("")}
+            </select>
+            <p class="field-error" data-error="status"></p>
+          </div>
+          <div class="field field-wide">
+            <label for="${prefix}-description">Description <span class="req">*</span></label>
+            <textarea id="${prefix}-description" name="description" rows="3" maxlength="1000"></textarea>
+            <p class="field-error" data-error="description"></p>
+          </div>`;
+      }
+
+      function readValues(form) {
+        return {
+          name: form.elements.namedItem("name").value.trim(),
+          description: form.elements.namedItem("description").value.trim(),
+          target_date: form.elements.namedItem("target_date").value,
+          status: form.elements.namedItem("status").value,
+        };
+      }
+
+      function validateCourse(values) {
+        const errors = {};
+        if (!values.name) errors.name = "Course name is required.";
+        if (!values.description) errors.description = "Description is required.";
+        if (!values.target_date) errors.target_date = "Target date is required.";
+        if (!STATUSES.includes(values.status)) errors.status = "Choose a status for the course.";
+        return errors;
+      }
+
+      function clearErrors(form) {
+        form.querySelectorAll("[data-error]").forEach((p) => (p.textContent = ""));
+        form.querySelectorAll("[aria-invalid]").forEach((f) => f.removeAttribute("aria-invalid"));
+      }
+
+      function showErrors(form, errors) {
+        clearErrors(form);
+        let first = null;
+        for (const [field, message] of Object.entries(errors)) {
+          const input = form.elements.namedItem(field);
+          form.querySelector(`[data-error="${field}"]`).textContent = message;
+          input.setAttribute("aria-invalid", "true");
+          first ??= input;
+        }
+        first?.focus();
+      }
+
+      function clearFieldError(e) {
+        const field = e.target;
+        if (!field.name || !field.hasAttribute("aria-invalid")) return;
+        field.removeAttribute("aria-invalid");
+        field.form.querySelector(`[data-error="${field.name}"]`).textContent = "";
+      }
+
+      function setBusy(button, busy) {
+        button.disabled = busy;
+        button.classList.toggle("is-loading", busy);
+      }
+
+      function showToast(message, type = "success") {
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        toast.setAttribute("role", type === "error" ? "alert" : "status");
+        toast.textContent = message;
+        $("toasts").append(toast);
+        setTimeout(() => toast.remove(), 4000);
+      }
+
+      async function request(method, path = "", body) {
+        let response;
+        try {
+          response = await fetch(API_URL + path, {
+            method,
+            headers: body ? { "Content-Type": "application/json" } : {},
+            body: body ? JSON.stringify(body) : undefined,
+          });
+        } catch {
+          throw new Error("Could not reach the server. Make sure it is running on localhost:5000.");
+        }
+
+        const text = await response.text();
+        let data = null;
+        try {
+          data = text ? JSON.parse(text) : null;
+        } catch {
+          data = null;
+        }
+
+        if (!response.ok) {
+          const serverMessage = data?.message ?? data?.error;
+          throw new Error(
+            typeof serverMessage === "string"
+              ? serverMessage
+              : `The request failed (status ${response.status}).`
+          );
+        }
+        return data;
+      }
+
+      function extractCourses(data) {
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data?.courses)) return data.courses;
+        if (Array.isArray(data?.data)) return data.data;
+        throw new Error("The server returned an unexpected response.");
+      }
+
+      function showListState(state, message = "") {
+        const isReady = state === "ready";
+        $("list-status").hidden = isReady;
+        $("list-loading").hidden = state !== "loading";
+        $("list-error").hidden = state !== "error";
+        $("list-error-text").textContent = message ? `Could not load courses. ${message}` : "";
+        $("table-wrap").hidden = !isReady || courses.length === 0;
+        $("empty-state").hidden = !isReady || courses.length > 0;
+        $("course-count").textContent = isReady ? `${courses.length} total` : "";
+      }
+
+      function rowMarkup(course) {
+        const id = escapeHtml(course.id);
+        return `
+          <tr>
+            <td data-label="Name"><span class="course-name">${escapeHtml(course.name)}</span></td>
+            <td data-label="Description"><span class="course-desc">${escapeHtml(course.description)}</span></td>
+            <td data-label="Target date">${escapeHtml(formatDate(course.target_date, true))}</td>
+            <td data-label="Status"><span class="badge ${statusBadgeClass(course.status)}">${escapeHtml(course.status)}</span></td>
+            <td data-label="Created">${escapeHtml(formatDate(course.created_at))}</td>
+            <td class="actions">
+              <button type="button" class="btn btn-ghost btn-small" data-action="edit" data-id="${id}">Edit</button>
+              <button type="button" class="btn btn-danger btn-small" data-action="delete" data-id="${id}">Remove</button>
+            </td>
+          </tr>`;
+      }
+
+      function renderCourses() {
+        $("course-rows").innerHTML = courses.map(rowMarkup).join("");
+      }
+
+      async function loadCourses() {
+        showListState("loading");
+        try {
+          courses = extractCourses(await request("GET"));
+          renderCourses();
+          showListState("ready");
+        } catch (err) {
+          showListState("error", err.message);
+        }
+      }
+
+      function openEdit(course, trigger) {
+        editingId = course.id;
+        returnFocusEl = trigger;
+        editForm.elements.namedItem("name").value = course.name ?? "";
+        editForm.elements.namedItem("description").value = course.description ?? "";
+        editForm.elements.namedItem("target_date").value = String(course.target_date ?? "").slice(0, 10);
+        editForm.elements.namedItem("status").value = course.status ?? "";
+        clearErrors(editForm);
+        editModal.hidden = false;
+        document.body.classList.add("modal-open");
+        editForm.elements.namedItem("name").focus();
+      }
+
+      function closeEdit() {
+        editModal.hidden = true;
+        document.body.classList.remove("modal-open");
+        editingId = null;
+        returnFocusEl?.focus();
+        returnFocusEl = null;
+      }
+
+      async function removeCourse(course, button) {
+        if (!window.confirm(`Remove "${course.name}"? This cannot be undone.`)) return;
+        setBusy(button, true);
+        try {
+          await request("DELETE", `/${encodeURIComponent(course.id)}`);
+          showToast("Course removed.");
+          await loadCourses();
+        } catch (err) {
+          showToast(err.message, "error");
+        } finally {
+          setBusy(button, false);
+        }
+      }
+
+      createForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const values = readValues(createForm);
+        const errors = validateCourse(values);
+        if (Object.keys(errors).length) return showErrors(createForm, errors);
+
+        const button = createForm.querySelector('button[type="submit"]');
+        setBusy(button, true);
+        try {
+          await request("POST", "", values);
+          createForm.reset();
+          clearErrors(createForm);
+          showToast("Course added successfully.");
+          await loadCourses();
+        } catch (err) {
+          showToast(err.message, "error");
+        } finally {
+          setBusy(button, false);
+        }
+      });
+
+      editForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const values = readValues(editForm);
+        const errors = validateCourse(values);
+        if (Object.keys(errors).length) return showErrors(editForm, errors);
+
+        const button = editForm.querySelector('button[type="submit"]');
+        setBusy(button, true);
+        try {
+          await request("PUT", `/${encodeURIComponent(editingId)}`, values);
+          closeEdit();
+          showToast("Course updated.");
+          await loadCourses();
+        } catch (err) {
+          showToast(err.message, "error");
+        } finally {
+          setBusy(button, false);
+        }
+      });
+
+      $("course-rows").addEventListener("click", (e) => {
+        const button = e.target.closest("button[data-action]");
+        if (!button) return;
+        const course = courses.find((c) => String(c.id) === button.dataset.id);
+        if (!course) return;
+        if (button.dataset.action === "edit") {
+          openEdit(course, button);
+        } else {
+          removeCourse(course, button);
+        }
+      });
+
+      $("edit-close").addEventListener("click", closeEdit);
+      $("edit-cancel").addEventListener("click", closeEdit);
+      editModal.addEventListener("click", (e) => {
+        if (e.target === editModal) closeEdit();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !editModal.hidden) closeEdit();
+      });
+      $("retry-btn").addEventListener("click", loadCourses);
+
+      [createForm, editForm].forEach((form) => {
+        form.addEventListener("input", clearFieldError);
+        form.addEventListener("change", clearFieldError);
+      });
+
+      $("create-fields").innerHTML = fieldsMarkup("create");
+      $("edit-fields").innerHTML = fieldsMarkup("edit");
+      loadCourses();
+    </script>
+  </body>
+</html>
